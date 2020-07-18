@@ -7,13 +7,28 @@
           <h3>{{ column.name }}</h3>
         </div>
         <div class="list-reset">
-          <div class="tasks" v-for="(task, $taskIndex) of column.tasks" :key="$taskIndex" @click="openThisTask(task)">
-            <span class="flex-no-shrink font-semibold w-full">{{ task.name }}</span>
+          <div
+            class="tasks"
+            v-for="(task, $taskIndex) of column.tasks"
+            :key="$taskIndex"
+            @click="openThisTask(task)"
+          >
+            <span class="flex-no-shrink font-semibold w-full">
+              {{
+              task.name
+              }}
+            </span>
             <p
               v-if="task.description"
               class="mt-1 flex-no-shrink w-full text-sm"
             >{{ task.description }}</p>
           </div>
+          <input
+            type="text"
+            class="block w-full bg-transparent p-2"
+            placeholder="+ Enter task name"
+            @keyup.enter="createNewTask($event, column.tasks)"
+          />
         </div>
       </div>
     </div>
@@ -35,11 +50,15 @@ export default {
     }
   },
   methods: {
-    openThisTask(task){
-      this.$router.push({name:"task", params:{id:task.id}});
+    openThisTask(task) {
+      this.$router.push({ name: "task", params: { id: task.id } });
     },
-    closeThisTask(){
-      this.$router.go(-1); 
+    closeThisTask() {
+      this.$router.go(-1);
+    },
+    createNewTask(e, tasks) {
+      this.$store.dispatch("createTask", { e, tasks });
+      e.target.value = "";
     }
   }
 };
@@ -55,11 +74,17 @@ export default {
 .tasks {
   @apply bg-white rounded shadow text-left p-1 text-black mb-2;
 }
-.task-bg{
+.task-bg {
   background: rgba(0, 0, 0, 0.5);
   position: absolute;
   top: 0;
   width: 100%;
-  height: 100%; 
+  height: 100%;
+}
+.list-reset input::placeholder {
+  color: #000;
+}
+.list-reset input:focus {
+  outline: none;
 }
 </style>
