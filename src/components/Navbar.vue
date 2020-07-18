@@ -1,29 +1,21 @@
 <template>
-  <nav class="red-100">
-    <a href="/" class="navbar-links">home</a>
+  <nav
+    class="flex bg-gray-800 border-b border-teal-500 flex-row w-100 justify-between align-center px-8 py-4"
+  >
     <div class="logo">
-      <h1 class="text-red-200">Trello</h1>
+      <h1 class="text-2xl text-teal-500 font-semibold tracking-wider">Trello</h1>
     </div>
-    <a href="#" class="navbar-links">user</a>
   </nav>
 </template>
 
 <script>
 export default {
-  name: "Navbar",
+  name: "Navbar"
 };
 </script>
 
 <style lang="scss" scoped>
-nav {
-  padding: 32px 16px;
-  display: flex;
-  justify-content: space-between;
-}
-nav .navbar-links {
-  padding: 8px 16px;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: #fff;
-  border-radius: 4px;
+.navbar-links {
+  @apply bg-teal-500 text-white px-5 py-2;
 }
 </style>
