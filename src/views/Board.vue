@@ -6,7 +6,9 @@
         class="column"
         v-for="(column, $columnIndex) of board.columns"
         :key="$columnIndex"
-        @drop="moveTask($event, column.tasks)"
+        draggable
+        @dragstart.self="pickUpColumn($event, $columnIndex, 'column')"
+        @drop="moveTaskOrColumn($event, column.tasks, $columnIndex)"
         @dragover.prevent
         @dragenter.prevent
       >
@@ -19,7 +21,7 @@
             v-for="(task, $taskIndex) of column.tasks"
             :key="$taskIndex"
             draggable
-            @dragstart="pickUpTask($event, $columnIndex, $taskIndex)"
+            @dragstart="pickUpTask($event, $columnIndex, $taskIndex, 'task')"
             @click="openThisTask(task)"
           >
             <span class="flex-no-shrink font-semibold w-full">
@@ -69,18 +71,41 @@ export default {
       this.$store.dispatch("createTask", { e, tasks });
       e.target.value = "";
     },
-    pickUpTask(event, fromColumnIndex, taskIndex) {
-      console.log("vevever");
+    pickUpTask(event, fromColumnIndex, taskIndex, type) {
       event.dataTransfer.effectAllowed = "move";
       event.dataTransfer.dropEffect = "move";
 
       event.dataTransfer.setData("task-index", taskIndex);
       event.dataTransfer.setData("column-index", fromColumnIndex);
+      event.dataTransfer.setData("type", type);
+    },
+    pickUpColumn(event, fromColumnIndex, type) {
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
+
+      event.dataTransfer.setData("column-index", fromColumnIndex);
+      event.dataTransfer.setData("type", type);
+    },
+    moveTaskOrColumn(event, toTasks, toColumnIndex) {
+      const type = event.dataTransfer.getData("type");
+      if (type === "task") {
+        this.moveTask(event, toTasks);
+      } else {
+        this.moveColumn(event, toColumnIndex);
+      }
+    },
+    moveColumn(event, toColumnIndex) {
+      const fromColumnIndex = event.dataTransfer.getData("column-index");
+      this.$store.dispatch("moveColumn", {
+        fromColumn: fromColumnIndex,
+        toColumn: toColumnIndex
+      });
     },
     moveTask(event, toTasks) {
       const fromColumnIndex = event.dataTransfer.getData("column-index");
       const fromTasks = this.board.columns[fromColumnIndex].tasks;
       const taskIndex = event.dataTransfer.getData("task-index");
+
       this.$store.dispatch("moveTask", {
         fromTasks,
         toTasks,
