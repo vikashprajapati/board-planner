@@ -23,12 +23,13 @@
             draggable
             @dragstart="pickUpTask($event, $columnIndex, $taskIndex, 'task')"
             @click="openThisTask(task)"
+            @dragover.prevent
+            @dragenter.prevent
+            @drop.stop="
+              moveTaskOrColumn($event, column.tasks, $columnIndex, $taskIndex)
+            "
           >
-            <span class="flex-no-shrink font-semibold w-full">
-              {{
-              task.name
-              }}
-            </span>
+            <span class="flex-no-shrink font-semibold w-full">{{ task.name }}</span>
             <p
               v-if="task.description"
               class="mt-1 flex-no-shrink w-full text-sm"
@@ -86,10 +87,14 @@ export default {
       event.dataTransfer.setData("column-index", fromColumnIndex);
       event.dataTransfer.setData("type", type);
     },
-    moveTaskOrColumn(event, toTasks, toColumnIndex) {
+    moveTaskOrColumn(event, toTasks, toColumnIndex, taskIndex) {
       const type = event.dataTransfer.getData("type");
       if (type === "task") {
-        this.moveTask(event, toTasks);
+        this.moveTask(
+          event,
+          toTasks,
+          taskIndex !== undefined ? taskIndex : toTasks.length
+        );
       } else {
         this.moveColumn(event, toColumnIndex);
       }
@@ -101,15 +106,16 @@ export default {
         toColumn: toColumnIndex
       });
     },
-    moveTask(event, toTasks) {
+    moveTask(event, toTasks, toTaskIndex) {
       const fromColumnIndex = event.dataTransfer.getData("column-index");
       const fromTasks = this.board.columns[fromColumnIndex].tasks;
-      const taskIndex = event.dataTransfer.getData("task-index");
+      const fromTaskIndex = event.dataTransfer.getData("task-index");
 
       this.$store.dispatch("moveTask", {
         fromTasks,
+        fromTaskIndex,
         toTasks,
-        taskIndex
+        toTaskIndex
       });
     }
   }
