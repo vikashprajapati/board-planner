@@ -1,13 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import defaultBoard from "../default-board.js";
-import { saveStatePlugin, uuid } from "../utilities/utils.js";
+import { uuid } from "../utilities/utils.js";
 
 Vue.use(Vuex);
 
 const board = JSON.parse(localStorage.getItem("board")) || defaultBoard;
 export default new Vuex.Store({
-  plugins: [saveStatePlugin],
+  plugins: [],
   state: {
     board
   },
@@ -22,6 +22,10 @@ export default new Vuex.Store({
     },
     UPDATE_TASK(state, { key, task, value }) {
       task[key] = value;
+    },
+    MOVE_TASK(state, { fromTasks, toTasks, taskIndex }) {
+      const taskToMove = fromTasks.splice(taskIndex, 1)[0];
+      toTasks.push(taskToMove);
     }
   },
   actions: {
@@ -30,6 +34,9 @@ export default new Vuex.Store({
     },
     updateTask({ commit }, { key, task, value }) {
       commit("UPDATE_TASK", { key, task, value });
+    },
+    moveTask({ commit }, { fromTasks, toTasks, taskIndex }) {
+      commit("MOVE_TASK", { fromTasks, toTasks, taskIndex });
     }
   },
   modules: {},
