@@ -20,6 +20,12 @@ export default new Vuex.Store({
         userAssigned: null
       });
     },
+    CREATE_COLUMN(state, name) {
+      state.board.columns.push({
+        name,
+        tasks: []
+      });
+    },
     UPDATE_TASK(state, { key, task, value }) {
       task[key] = value;
     },
@@ -36,6 +42,9 @@ export default new Vuex.Store({
   actions: {
     createTask({ commit }, { e, tasks }) {
       commit("CREATE_TASK", { e, tasks });
+    },
+    createColumn({ commit }, { name }) {
+      commit("CREATE_COLUMN", name);
     },
     updateTask({ commit }, { key, task, value }) {
       commit("UPDATE_TASK", { key, task, value });
