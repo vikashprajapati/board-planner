@@ -14,8 +14,10 @@
 </template>
 
 <script>
+import moveTasksAndColumnMixin from "../mixins/moveTasksAndColumnMixin.js";
 export default {
   name: "ColumnTask",
+  mixins: [moveTasksAndColumnMixin],
   props: {
     task: {
       type: Object,
@@ -23,18 +25,6 @@ export default {
     },
     taskIndex: {
       type: Number,
-      required: true
-    },
-    columnIndex: {
-      type: Number,
-      required: true
-    },
-    column: {
-      type: Object,
-      required: true
-    },
-    board: {
-      type: Object,
       required: true
     }
   },
@@ -49,37 +39,6 @@ export default {
       event.dataTransfer.setData("task-index", taskIndex);
       event.dataTransfer.setData("column-index", fromColumnIndex);
       event.dataTransfer.setData("type", type);
-    },
-    moveTask(event, toTasks, toTaskIndex) {
-      const fromColumnIndex = event.dataTransfer.getData("column-index");
-      const fromTasks = this.board.columns[fromColumnIndex].tasks;
-      const fromTaskIndex = event.dataTransfer.getData("task-index");
-
-      this.$store.dispatch("moveTask", {
-        fromTasks,
-        fromTaskIndex,
-        toTasks,
-        toTaskIndex
-      });
-    },
-    moveColumn(event, toColumnIndex) {
-      const fromColumnIndex = event.dataTransfer.getData("column-index");
-      this.$store.dispatch("moveColumn", {
-        fromColumn: fromColumnIndex,
-        toColumn: toColumnIndex
-      });
-    },
-    moveTaskOrColumn(event, toTasks, toColumnIndex, taskIndex) {
-      const type = event.dataTransfer.getData("type");
-      if (type === "task") {
-        this.moveTask(
-          event,
-          toTasks,
-          taskIndex !== undefined ? taskIndex : toTasks.length
-        );
-      } else {
-        this.moveColumn(event, toColumnIndex);
-      }
     }
   }
 };
