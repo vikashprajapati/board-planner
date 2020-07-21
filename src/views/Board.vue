@@ -1,6 +1,11 @@
 <template>
-  <div class="board bg-gray-800 h-full py-4">
-    <h1 class="text-2xl font-bold tracking-wide text-white text-center">Welcome! to Trello</h1>
+  <div class="board bg-gray-800 h-full py-4 mt-16">
+    <div class="flex flex-col items-start px-4 py-1">
+      <input
+        class="text-xl p-1 px-2 rounded font-bold tracking-wide bg-gray-500 text-white capitalize"
+        :value="boardName"
+      />
+    </div>
     <div class="flex flex-row items-start p-4">
       <div v-for="(column, $columnIndex) of board.columns" :key="$columnIndex">
         <BoardColumn :column="column" :board="board" :columnIndex="$columnIndex" />
@@ -40,6 +45,9 @@ export default {
     ...mapState(["board"]),
     isTaskOpen() {
       return this.$route.name === "task";
+    },
+    boardName() {
+      return this.board.name;
     }
   },
   methods: {
