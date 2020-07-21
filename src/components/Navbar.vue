@@ -7,10 +7,10 @@
     </div>
     <ul class="flex flex-row items-center">
       <router-link :to="{ name: 'login' }">
-        <li class="text-yellow-500 text-lg mr-5">Log In</li>
+        <li class="loign text-yellow-500 text-md mr-5">Log In</li>
       </router-link>
       <router-link :to="{ name: 'signup' }">
-        <li class="px-2 py-1 rounded text-lg bg-yellow-500 text-white">Sign Up</li>
+        <li class="px-2 py-1 rounded text-md bg-yellow-500 text-white">Sign Up</li>
       </router-link>
     </ul>
   </nav>
@@ -22,8 +22,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-.navbar-links {
-  @apply bg-teal-500 text-white px-5 py-2;
-}
-</style>
+<style lang="scss" scoped></style>
