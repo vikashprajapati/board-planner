@@ -22,6 +22,7 @@ export default {
 }
 body {
   min-height: 100vh;
+  min-width: 100vw;
   background: #282828;
   display: flex;
 }
@@ -34,6 +35,7 @@ a {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  width: 100vw;
 }
 
 input::placeholder {
