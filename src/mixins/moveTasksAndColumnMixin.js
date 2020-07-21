@@ -14,23 +14,17 @@ export default {
         }
     },
     methods: {
-        moveTaskOrColumn(event, toTasks, toColumnIndex, taskIndex) {
-            const type = event.dataTransfer.getData("type");
-            if (type === "task") {
-                this.moveTask(
-                    event,
-                    toTasks,
-                    taskIndex !== undefined ? taskIndex : toTasks.length
-                );
+        moveTaskOrColumn(transferData) {
+            if (transferData.type === "task") {
+                this.moveTask(transferData);
             } else {
-                this.moveColumn(event, toColumnIndex);
+                this.moveColumn(transferData);
             }
         },
-        moveColumn(event, toColumnIndex) {
-            const fromColumnIndex = event.dataTransfer.getData("column-index");
+        moveColumn({ fromColumnIndex }) {
             this.$store.dispatch("moveColumn", {
                 fromColumn: fromColumnIndex,
-                toColumn: toColumnIndex
+                toColumn: this.columnIndex
             });
         },
         moveTask(event, toTasks, toTaskIndex) {

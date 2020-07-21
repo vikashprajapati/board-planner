@@ -36,7 +36,7 @@ a {
   color: #2c3e50;
 }
 
-input::placeholder {
+input::-moz-placeholder {
   color: #000 !important;
 }
 </style>
