@@ -1,4 +1,4 @@
-# trello
+# board planner
 
 ## Project setup
 ```
