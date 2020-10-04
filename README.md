@@ -1,5 +1,9 @@
 # board planner
 
+# Prerequisites
+```
+VUE-JS | HTML | CSS
+```
 ## Project setup
 ```
 npm install
